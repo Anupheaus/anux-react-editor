@@ -1,0 +1,14 @@
+anux-editor {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+
+    .anux-editor-field {
+        padding: 0 0 2px;
+
+        >div {
+            display: flex;
+            flex: auto;
+        }
+    }
+}

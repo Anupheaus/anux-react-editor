@@ -5,7 +5,7 @@ export interface IEditorContext<T extends {} = {}> {
     isDirty: boolean;
     validationErrors: IValidationError[];
     update(record: T): void;
-    save(): void;
+    save(): Promise<void>;
     cancel(): void;
     setValidationErrorsFor(id: string, errors: IValidationError[]): void;
 }

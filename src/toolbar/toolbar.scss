@@ -1,0 +1,16 @@
+anux-editor-toolbar {
+  position: relative;
+  display: flex;
+  flex: auto;
+  justify-content: flex-end;
+  margin-top: 10px;
+
+  > anux-editor-toolbar-custom {
+    display: flex;
+    flex: auto;
+  }
+
+  > button.MuiButtonBase-root {
+    margin-left: 10px;
+  }
+}

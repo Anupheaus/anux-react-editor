@@ -59,7 +59,7 @@ export const DropdownField: <T extends IRecord>(props: PropsWithChildren<IProps<
             <FormControl error={!!validationError} disabled={isReadOnly || isLoadingItems}>
                 {label ? <InputLabel htmlFor={inputId}>{label}</InputLabel> : null}
                 <Select
-                    value={get}
+                    value={get || ''}
                     onChange={handleChanged}
                     input={<Input
                         id={inputId}
@@ -68,7 +68,7 @@ export const DropdownField: <T extends IRecord>(props: PropsWithChildren<IProps<
                 >
                     {loadedItems ? renderItems() : null}
                 </Select>
-                {isLoadingItems ? <LinearProgress className="anux-editor-dropdown-progress" /> : null}
+                {isLoadingItems ? <LinearProgress className="anux-editor-field-progress" /> : null}
                 {validationError ? <FormHelperText>{validationError.message}</FormHelperText> : null}
             </FormControl>
         </CustomTag>

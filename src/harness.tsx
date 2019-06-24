@@ -1,6 +1,5 @@
 import { createHarness } from 'anux-package';
-import { Editor } from './editor';
-import { TextField, NumberField, DropdownField, AutocompleteField } from './fields';
+import { Editor, TextField, NumberField, DropdownField, AutocompleteField, DateTimeField, DateTimeModes, SwitchField, EditorToolbar } from './';
 import { useBound, CustomTag } from 'anux-react-utils';
 import './harness.scss';
 import { FunctionComponent } from 'react';
@@ -10,6 +9,8 @@ interface IRecord {
     age: number;
     sourceId: string;
     invalidSourceId: string;
+    date: number;
+    switch: boolean;
 }
 
 interface ISource {
@@ -23,12 +24,21 @@ interface IProps {
 
 const ReportRecord: FunctionComponent<IProps> = ({ record }) => {
 
-    const renderProperty = useBound((property: PropertyKey) => (
+    const formatValue = (value: any) => {
+        switch (typeof (value)) {
+            case 'boolean':
+                return value === true ? 'true' : 'false';
+            default:
+                return value;
+        }
+    };
+
+    const renderProperty = (property: PropertyKey) => (
         <CustomTag key={property.toString()} name="record-property">
             <CustomTag name="record-property-name">{property.toString()}:</CustomTag>
-            <CustomTag name="record-property-value">{record[property]}</CustomTag>
+            <CustomTag name="record-property-value">{formatValue(record[property])}</CustomTag>
         </CustomTag>
-    ));
+    );
 
     return (
         <CustomTag name="report-record">
@@ -43,6 +53,8 @@ export const editorHarness = createHarness({ name: 'Editor' }, () => {
         age: 38,
         sourceId: '123',
         invalidSourceId: '200',
+        date: (new Date((new Date()).toUTCString())).valueOf(),
+        switch: true,
     };
 
     const sources: ISource[] = [
@@ -102,14 +114,38 @@ export const editorHarness = createHarness({ name: 'Editor' }, () => {
                     <AutocompleteField<ISource>
                         label="Autocomplete Field"
                         get={record.sourceId}
-                        set={item => update({ ...record, sourceId: item.id })}
+                        set={item => update({ ...record, sourceId: item ? item.id : undefined })}
                         items={loadItems}
+                        getTextFromItem={item => item.name}
                     >
-                        {({ item: { name } }) => (
-                            <div>{name}</div>
+                        {({ item: { name }, text }) => (
+                            <div>{name} ({text})</div>
                         )}
                     </AutocompleteField>
-
+                    <DateTimeField
+                        label="Date Time Field"
+                        get={record.date}
+                        set={date => update({ ...record, date })}
+                    />
+                    <DateTimeField
+                        label="Date Field"
+                        mode={DateTimeModes.DateOnly}
+                        get={record.date}
+                        set={date => update({ ...record, date })}
+                    />
+                    <DateTimeField
+                        label="Time Field"
+                        mode={DateTimeModes.TimeOnly}
+                        get={record.date}
+                        set={date => update({ ...record, date })}
+                    />
+                    <SwitchField
+                        label="Switch Field"
+                        get={record.switch}
+                        set={value => update({ ...record, switch: value })}
+                    />
+                    <EditorToolbar />
+                    <ReportRecord record={data} />
                     <ReportRecord record={record} />
                 </>
             )}

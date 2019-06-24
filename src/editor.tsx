@@ -13,7 +13,7 @@ interface IProps<T extends {}> {
     record: T;
     className?: string;
     children(props: IEditorChildren<T>): ReactElement;
-    onSave?(record: T): void;
+    onSave?(record: T): Promise<void>;
     onCancel?(): void;
 }
 

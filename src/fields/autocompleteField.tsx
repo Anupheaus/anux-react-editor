@@ -3,7 +3,7 @@ import { CustomTag, useActions } from 'anux-react-utils';
 import { FormControl, FormHelperText, LinearProgress, TextField, Paper, Popper, MenuItem } from '@material-ui/core';
 import * as Autosuggest from 'react-autosuggest';
 import * as textContent from 'react-addons-text-content';
-import { useValidation } from '../hooks';
+import { useValidation, useFieldId, useFieldBusy } from '../hooks';
 import { IRecord, is } from 'anux-common';
 import { ValidationPriorities } from '../models';
 import './autocompleteField.scss';
@@ -50,12 +50,14 @@ export const AutocompleteField: <T extends IRecord>(props: PropsWithChildren<IPr
   children,
 }) => {
   type T = Parameters<typeof set>[0];
+  const id = useFieldId('anux-autocomplete');
 
   isReadOnly = isReadOnly || !set;
   const [{ items: loadedItems, value, isLoading, error: fetchError }, setState] = useState<IState<T>>({ value: '', items: undefined, isLoading: false, error: undefined });
-  const inputRef = useRef<HTMLInputElement>(undefined);
+  const [inputElement, setInputElement] = useState<HTMLInputElement>(undefined);
   const currentQueryIdRef = useRef('');
   const ignoreNextClearRef = useRef(false);
+  const setBusy = useFieldBusy(id);
   // const isLoadingItems = loadedItems == null;
 
   const {
@@ -63,25 +65,28 @@ export const AutocompleteField: <T extends IRecord>(props: PropsWithChildren<IPr
   } = useActions({
     async fetch(query: IQuery): Promise<void> {
       if (is.empty(query.id) && is.empty(query.text)) { return; }
+      setBusy(true);
       const currentQueryId = Math.uniqueId();
       currentQueryIdRef.current = currentQueryId;
       setState(s => ({ ...s, items: undefined, isLoading: true, error: undefined }));
       const results = await items(query);
       if (currentQueryIdRef.current !== currentQueryId) { return; }
       setState(s => ({ ...s, items: results, isLoading: false }));
+      setBusy(false);
       matchUsingQuery({ id: query.id });
     },
     stopFetching() {
       currentQueryIdRef.current = Math.emptyId();
+      setBusy(false);
       setState(s => ({ ...s, isLoading: false }));
     },
     async fetchForAutosuggest({ value: text, reason }: Autosuggest.SuggestionsFetchRequestedParams): Promise<void> {
       if (reason === 'input-focused') { return; }
       await fetch({ text });
     },
-    suggestionSelected(_event: FormEvent, { suggestion: { id } }: Autosuggest.SuggestionSelectedEventData<T>) {
+    suggestionSelected(_event: FormEvent, { suggestion: { id: selectedId } }: Autosuggest.SuggestionSelectedEventData<T>) {
       ignoreNextClearRef.current = true;
-      matchUsingQuery({ id });
+      matchUsingQuery({ id: selectedId });
     },
     matchUsingQuery(query: IQuery): boolean {
       if (is.empty(query.id) && is.empty(query.text)) { return true; }
@@ -125,10 +130,10 @@ export const AutocompleteField: <T extends IRecord>(props: PropsWithChildren<IPr
     },
     renderMenu(options: Autosuggest.RenderSuggestionsContainerParams): ReactElement {
       return (
-        <Popper className="anux-editor-autocomplete-field-popup-menu" anchorEl={inputRef.current} open={options.children != null}>
+        <Popper className="anux-editor-autocomplete-field-popup-menu" anchorEl={inputElement} open={options.children != null}>
           <Paper
             {...options.containerProps}
-            style={{ width: inputRef.current ? inputRef.current.clientWidth : null }}
+            style={{ width: inputElement ? inputElement.clientWidth : null }}
             square>
             {options.children}
           </Paper>
@@ -136,44 +141,42 @@ export const AutocompleteField: <T extends IRecord>(props: PropsWithChildren<IPr
       );
     },
     renderInput(args: any): ReactElement {
+      const { ref, ...other } = args;
       return (
         <TextField
           fullWidth
           InputProps={{
             inputRef: (node: HTMLInputElement) => {
-              inputRef.current = node;
-              args.ref(node);
+              ref(node);
+              setInputElement(node);
             },
-            ...args,
           }}
+          {...other}
         />
       );
     },
   });
 
   useEffect(() => {
-    const id = get;
-    if (is.empty(id)) { return; }
+    if (is.empty(get)) { return; }
     if (loadedItems && matchUsingQuery({ id })) { return; }
-    fetch({ id }).catch(error => setState(s => ({ ...s, error })));
+    fetch({ id: get }).catch(error => setState(s => ({ ...s, error })));
   }, [get]);
 
   const validationError = useValidation({
-    value: get,
-    isRequired,
+    id,
     isDisabled: isReadOnly || isLoading,
-    isValid(id, raiseError) {
-      if (fetchError) {
-        raiseError({ message: 'Failed to retrieve autocomplete suggestions.', priority: ValidationPriorities.Critical });
-      }
+    isRequired: () => isRequired && is.empty(get) && is.empty(value),
+    isValid(raiseError) {
+      if (fetchError) { raiseError({ message: 'Failed to retrieve autocomplete suggestions.', priority: ValidationPriorities.Critical }); }
       if (!loadedItems) { return; }
-      if (loadedItems.findById(id)) { return; }
+      if (loadedItems.findById(get)) { return; }
       raiseError({
         message: 'Current value is invalid',
         priority: ValidationPriorities.High,
       });
     },
-  });
+  }, [get, value, loadedItems]);
 
   const inputProps = useMemo<Autosuggest.InputProps<T>>(() => ({
     label,

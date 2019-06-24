@@ -3,7 +3,7 @@ import { useBound, CustomTag } from 'anux-react-utils';
 import { DatePicker, TimePicker, DateTimePicker, DatePickerProps, TimePickerProps, DateTimePickerProps, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import * as moment from 'moment';
-import { useValidation } from '../hooks';
+import { useValidation, useFieldId } from '../hooks';
 import './textField.scss';
 
 interface IProps {
@@ -41,8 +41,10 @@ export const DateTimeField: FunctionComponent<IProps> = ({
   views,
 }) => {
   isReadOnly = isReadOnly || !set;
+  const id = useFieldId('anux-dateTime');
 
   const validationError = useValidation({
+    id,
     value: get,
     isRequired,
     isDisabled: isReadOnly,

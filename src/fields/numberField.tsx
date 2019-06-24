@@ -1,7 +1,7 @@
 import { FC, ChangeEvent } from 'react';
 import { useBound, CustomTag } from 'anux-react-utils';
 import { TextField as MUITextField } from '@material-ui/core';
-import { useValidation } from '../hooks';
+import { useValidation, useFieldId } from '../hooks';
 import './textField.scss';
 import * as NumberFormatType from 'react-number-format';
 import { InputBaseComponentProps } from '@material-ui/core/InputBase';
@@ -41,8 +41,10 @@ export const NumberField: FC<IProps> =
         } = {},
     }) => {
         isReadOnly = isReadOnly || !set;
+        const id = useFieldId('anux-number');
 
         const validationError = useValidation({
+            id,
             value: get,
             isRequired,
             isDisabled: isReadOnly,

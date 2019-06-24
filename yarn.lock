@@ -793,10 +793,10 @@ anux-common@^1.0.36:
     numeral "^2.0.6"
     uuid "^3.3.2"
 
-anux-common@^1.0.37:
-  version "1.0.37"
-  resolved "https://registry.yarnpkg.com/anux-common/-/anux-common-1.0.37.tgz#8619c8ff5d8fe05587d5ff9e6a8e374432b80889"
-  integrity sha512-7Gfzep4ftOBbcamfvIRHnzJaTDngodVc7DZ+rAP2Hp+CLEAGC3Blz/ZewBPulvBe1y4DxTJpLUVWuxwiJ63new==
+anux-common@^1.0.38:
+  version "1.0.38"
+  resolved "https://registry.yarnpkg.com/anux-common/-/anux-common-1.0.38.tgz#48820bf55cd83f84314428c701df6f964b871cb6"
+  integrity sha512-CsX8gouXzcdqftuy3T29HdH7pS0JNFqGWjDhmhj5+XBjL3HFbxNtZ4M9V9aQmgl+PTozujdVK5z/V7F0KLSwLw==
   dependencies:
     "@types/datejs" "^0.0.30"
     "@types/numeral" "^0.0.25"

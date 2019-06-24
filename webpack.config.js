@@ -1,10 +1,6 @@
 const createConfig = require('anux-package/configs/webpack');
 
-const a = createConfig({
+module.exports = createConfig({
     title: "Anux - React - Editor",
     cleanOutputPath: true,
 });
-
-console.log(a);
-
-module.exports = a;

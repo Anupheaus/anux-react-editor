@@ -1,7 +1,7 @@
 import { ChangeEvent, FunctionComponent } from 'react';
 import { useBound, CustomTag } from 'anux-react-utils';
 import { Switch } from '@material-ui/core';
-import './switchField.scss';
+import './toggleField.scss';
 
 interface IProps {
   label?: string;
@@ -10,7 +10,7 @@ interface IProps {
   set?(newValue: boolean): void;
 }
 
-export const SwitchField: FunctionComponent<IProps> = ({
+export const ToggleField: FunctionComponent<IProps> = ({
   label,
   get,
   set,
@@ -24,8 +24,8 @@ export const SwitchField: FunctionComponent<IProps> = ({
   });
 
   return (
-    <CustomTag name="anux-editor-switch-field" className="anux-editor-field anux-editor-switch-field">
-      <CustomTag name="anux-editor-switch-label">{label}</CustomTag>
+    <CustomTag name="anux-editor-toggle-field" className="anux-editor-field anux-editor-toggle-field">
+      <CustomTag name="anux-editor-toggle-label">{label}</CustomTag>
       <Switch
         checked={get}
         disabled={isReadOnly}

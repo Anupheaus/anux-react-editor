@@ -5,27 +5,35 @@ anux-editor.test-class {
     background-color: #eee;
     border: solid 1px #aaa;
     box-shadow: 0 0 2px 1px #aaaaaa66;
+    font-size: 12pt;
 }
 
-report-record {
+harness-reports {
     position: absolute;
     top: 30px;
     left: 310px;
     width: 250px;
-    padding: 5px;
     display: flex;
     flex: none;
     flex-direction: column;
-    background-color: #eee;
-    border: solid 1px #aaa;
-    box-shadow: 0 0 2px 1px #aaaaaa66;
 
-    >record-property {
+    >report-record {
         display: flex;
         flex: none;
+        flex-direction: column;
+        background-color: #eee;
+        padding: 5px;
+        border: solid 1px #aaa;
+        box-shadow: 0 0 2px 1px #aaaaaa66;
+        margin-bottom: 20px;
 
-        >record-property-name {
-            width: 50%;
+        >record-property {
+            display: flex;
+            flex: none;
+
+            >record-property-name {
+                width: 50%;
+            }
         }
     }
 }

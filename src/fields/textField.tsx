@@ -2,7 +2,7 @@ import { FC, ChangeEvent } from 'react';
 import { useBound, CustomTag } from 'anux-react-utils';
 import { TextField as MUITextField } from '@material-ui/core';
 import { useValidation, useFieldId } from '../hooks';
-import './textField.scss';
+import styles from './fields.css';
 
 interface IProps {
     label?: string;
@@ -38,7 +38,7 @@ export const TextField: FC<IProps> = ({
     });
 
     return (
-        <CustomTag name="anux-editor-text-field" className="anux-editor-field anux-editor-text-field">
+        <CustomTag name="anux-editor-text-field" className={styles.common}>
             <MUITextField
                 label={label}
                 value={get}

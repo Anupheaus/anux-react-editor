@@ -4,7 +4,7 @@ import { DatePicker, TimePicker, DateTimePicker, DatePickerProps, TimePickerProp
 import MomentUtils from '@date-io/moment';
 import * as moment from 'moment';
 import { useValidation, useFieldId } from '../hooks';
-import './textField.scss';
+import styles from './fields.css';
 
 interface IProps {
   label?: string;
@@ -76,7 +76,7 @@ export const DateTimeField: FunctionComponent<IProps> = ({
   const renderDateTime = () => (<DateTimePicker {...commonProps} />);
 
   return (
-    <CustomTag name="anux-editor-datetime-field" className="anux-editor-field anux-editor-datetime-field">
+    <CustomTag name="anux-editor-datetime-field" className={styles.common}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         {mode === DateTimeModes.DateOnly ? renderDateOnly() : mode === DateTimeModes.TimeOnly ? renderTimeOnly() : renderDateTime()}
       </MuiPickersUtilsProvider>

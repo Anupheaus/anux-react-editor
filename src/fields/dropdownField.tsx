@@ -4,6 +4,7 @@ import { Select, FormControl, InputLabel, FormHelperText, Input, MenuItem, Linea
 import { useValidation, useFieldBusy, useFieldId } from '../hooks';
 import { IRecord } from 'anux-common';
 import { ValidationPriorities } from '../models';
+import styles from './fields.css';
 
 interface IProps<T extends IRecord> {
     label?: string;
@@ -57,7 +58,7 @@ export const DropdownField: <T extends IRecord>(props: PropsWithChildren<IProps<
     )));
 
     return (
-        <CustomTag name="anux-editor-dropdown-field" className="anux-editor-field anux-editor-dropdown-field">
+        <CustomTag name="anux-editor-dropdown-field" className={styles.common}>
             <FormControl error={!!validationError} disabled={isReadOnly || isLoadingItems}>
                 {label ? <InputLabel htmlFor={id}>{label}</InputLabel> : null}
                 <Select
@@ -70,7 +71,7 @@ export const DropdownField: <T extends IRecord>(props: PropsWithChildren<IProps<
                 >
                     {loadedItems ? renderItems() : null}
                 </Select>
-                {isLoadingItems ? <LinearProgress className="anux-editor-field-progress" /> : null}
+                {isLoadingItems ? <LinearProgress className={styles.progress} /> : null}
                 {validationError ? <FormHelperText>{validationError.message}</FormHelperText> : null}
             </FormControl>
         </CustomTag>

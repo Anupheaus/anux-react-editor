@@ -6,7 +6,8 @@ import * as textContent from 'react-addons-text-content';
 import { useValidation, useFieldId, useFieldBusy } from '../hooks';
 import { IRecord, is } from 'anux-common';
 import { ValidationPriorities } from '../models';
-import './autocompleteField.scss';
+import styles from './autocompleteField.css';
+import commonStyles from './fields.css';
 
 interface IRenderParams<T extends IRecord> {
   item: T;
@@ -130,7 +131,7 @@ export const AutocompleteField: <T extends IRecord>(props: PropsWithChildren<IPr
     },
     renderMenu(options: Autosuggest.RenderSuggestionsContainerParams): ReactElement {
       return (
-        <Popper className="anux-editor-autocomplete-field-popup-menu" anchorEl={inputElement} open={options.children != null}>
+        <Popper className={styles.popupMenu} anchorEl={inputElement} open={options.children != null}>
           <Paper
             {...options.containerProps}
             style={{ width: inputElement ? inputElement.clientWidth : null }}
@@ -190,7 +191,7 @@ export const AutocompleteField: <T extends IRecord>(props: PropsWithChildren<IPr
   }), [label, hint, value]);
 
   return (
-    <CustomTag name="anux-editor-autocomplete-field" className="anux-editor-field anux-editor-autocomplete-field">
+    <CustomTag name="anux-editor-autocomplete-field" className={commonStyles.common}>
       <FormControl error={!!validationError} disabled={isReadOnly || isLoading}>
         <Autosuggest
           renderInputComponent={renderInput}
@@ -203,7 +204,7 @@ export const AutocompleteField: <T extends IRecord>(props: PropsWithChildren<IPr
           inputProps={inputProps}
           renderSuggestionsContainer={renderMenu}
         ></Autosuggest>
-        {isLoading ? <LinearProgress className="anux-editor-field-progress" /> : null}
+        {isLoading ? <LinearProgress className={commonStyles.progress} /> : null}
         {validationError ? <FormHelperText>{validationError.message}</FormHelperText> : null}
       </FormControl>
     </CustomTag >

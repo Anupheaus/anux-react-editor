@@ -1,7 +1,8 @@
 import { ChangeEvent, FunctionComponent } from 'react';
-import { useBound, CustomTag } from 'anux-react-utils';
+import { useBound, CustomTag, useClasses } from 'anux-react-utils';
 import { Switch } from '@material-ui/core';
-import './toggleField.scss';
+import commonStyles from './fields.css';
+import styles from './toggleField.css';
 
 interface IProps {
   label?: string;
@@ -23,14 +24,20 @@ export const ToggleField: FunctionComponent<IProps> = ({
     set(isChecked);
   });
 
+  const classNames = useClasses([
+    commonStyles.common,
+    styles.root,
+  ]);
+
   return (
-    <CustomTag name="anux-editor-toggle-field" className="anux-editor-field anux-editor-toggle-field">
-      <CustomTag name="anux-editor-toggle-label">{label}</CustomTag>
+    <CustomTag name="anux-editor-toggle-field" className={classNames}>
+      <CustomTag name="anux-editor-toggle-label" className={styles.label}>{label}</CustomTag>
       <Switch
         checked={get}
         disabled={isReadOnly}
         onChange={handleChanged}
         color="primary"
+        className={styles.span}
       />
     </CustomTag>
   );

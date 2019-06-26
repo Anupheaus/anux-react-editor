@@ -2,9 +2,9 @@ import { FC, ChangeEvent } from 'react';
 import { useBound, CustomTag } from 'anux-react-utils';
 import { TextField as MUITextField } from '@material-ui/core';
 import { useValidation, useFieldId } from '../hooks';
-import './textField.scss';
 import * as NumberFormatType from 'react-number-format';
 import { InputBaseComponentProps } from '@material-ui/core/InputBase';
+import styles from './fields.css';
 
 const NumberFormat = NumberFormatType as any as typeof NumberFormatType.default; // types are wrong...grrrr
 
@@ -77,7 +77,7 @@ export const NumberField: FC<IProps> =
         ));
 
         return (
-            <CustomTag name="anux-editor-number-field" className="anux-editor-field anux-editor-number-field">
+            <CustomTag name="anux-editor-number-field" className={styles.common}>
                 <MUITextField
                     label={label}
                     value={get}

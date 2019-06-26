@@ -2,7 +2,7 @@ import { ReactElement, PropsWithChildren, useState, useEffect } from 'react';
 import { useBound, areShallowEqual, CustomTag, useClasses } from 'anux-react-utils';
 import { IValidationError } from './models';
 import { EditorContext } from './context';
-import './editor.scss';
+import styles from './editor.css';
 import { IMap, PromiseMaybe } from 'anux-common';
 
 interface IEditorChildren<T extends {}> {
@@ -67,7 +67,7 @@ export const Editor: <T extends {}>(props: PropsWithChildren<IProps<T>>) => Reac
 
   const canSave = isDirty && busyFields.length === 0 && validationErrors.length === 0;
 
-  const classNames = useClasses(['anux-editor', className]);
+  const classNames = useClasses(['anux-editor', className, styles.root]);
 
   return (
     <CustomTag name="anux-editor" className={classNames}>

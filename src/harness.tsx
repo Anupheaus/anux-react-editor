@@ -1,7 +1,7 @@
 import { createHarness } from 'anux-package';
 import { Editor, TextField, NumberField, DropdownField, AutocompleteField, DateTimeField, DateTimeModes, ToggleField, EditorContext } from './';
 import { useBound, CustomTag } from 'anux-react-utils';
-import './harness.scss';
+import styles from './harness.css';
 import { FunctionComponent, useContext, useState } from 'react';
 import { Button, Switch } from '@material-ui/core';
 
@@ -42,7 +42,7 @@ const ReportRecord: FunctionComponent<IProps> = ({ record }) => {
   );
 
   return (
-    <CustomTag name="report-record">
+    <CustomTag name="report-record" className={styles.reports.block}>
       {Reflect.ownKeys(record).map(renderProperty)}
     </CustomTag>
   );
@@ -86,7 +86,7 @@ export const editorHarness = createHarness({ name: 'Editor' }, () => {
 
   return (
     <Editor<IRecord>
-      className="test-class"
+      className={styles.editor}
       record={data}
       onSave={handleOnSave}
     >
@@ -163,7 +163,7 @@ export const editorHarness = createHarness({ name: 'Editor' }, () => {
             set={value => update({ ...record, switch: value })}
           />
           <Toolbar />
-          <CustomTag name="harness-reports">
+          <CustomTag name="harness-reports" className={styles.reports.container}>
             <ReportRecord record={data} />
             <ReportRecord record={record} />
           </CustomTag>

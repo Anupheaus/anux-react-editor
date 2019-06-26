@@ -1,4 +1,12 @@
-anux-editor {
+import { style, flex } from 'anux-react-styles';
+
+export default {
+
+  root: style(flex.content.stack),
+
+};
+
+/*  anux-editor {
   display: flex;
   flex: none;
   flex-direction: column;
@@ -30,4 +38,4 @@ anux-editor {
       }
     }
   }
-}
+}*/
